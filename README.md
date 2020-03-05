@@ -28,6 +28,16 @@ serverless-aws-api-metrics
 
 `serverless-aws-api-metrics` fetchs AWS API calls from CloudTrail events log and save the events count in sec by sampling into CloudWatch Custom Metrics, powered by AWS Lambda.
 
+
+# What's for?
+
+Some AWS API is not billing target but has some quotas.
+For example, `SNS::GetEndpointAttributes` has default soft-limit.
+It's 3000tps in `us-east-1` but [only 30tps](https://docs.aws.amazon.com/general/latest/gr/sns.html) in `eu-west-2` and `eu-west-3`.
+
+Some API call can retrive through CroudTrail events so I want to monitor them.
+https://docs.aws.amazon.com/general/latest/gr/aws-service-information.html
+
 # Download
 
 Download serverless-aws-api-metrics by command below.
