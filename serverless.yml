@@ -1,0 +1,37 @@
+service:
+  name: serverless-aws-api-metrics
+
+frameworkVersion: ">=1.63.0"
+
+provider:
+  name: aws
+  region: ap-northeast-1
+  runtime: go1.x
+  logRetentionInDays: 14
+  # deploymentBucket:
+  #   name: serverless-deployment
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "cloudtrail:LookupEvents"
+         - "cloudwatch:PutMetricData"
+       Resource: "*"
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  sns:
+    handler: bin/serverless
+    tags:
+      env: prod
+    memorySize: 128
+    timeout: 290
+    environment:
+      METRIC_EVENT_GROUP: 'SNS'
+      METRIC_EVENT_NAME: 'GetEndpointAttributes,SetEndpointAttributes'
+    events:
+      - schedule: cron(*/5 * * * ? *)
